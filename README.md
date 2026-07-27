@@ -1,30 +1,30 @@
-# Unified Mentors
+# RoomEase - Co-Living & Accommodation Platform
 
-Unified Mentors is a full-stack web application built using the MERN stack (MongoDB, Express.js, React.js, Node.js). 
+RoomEase is a full-stack web application built using the MERN stack (MongoDB, Express.js, React.js, Node.js). This project was built to solve the problem of finding compatible roommates and managing shared rental properties.
 
 ## 🚀 Tech Stack
 
 ### Frontend
 - **React.js** (v19)
-- **Vite** (Build tool)
-- **Tailwind CSS** (Styling)
-- **React Router DOM** (Routing)
+- **Vite**
+- **Tailwind CSS**
+- **React Router DOM**
 - **Lucide React** (Icons)
-- **Axios** (HTTP client)
+- **Axios**
 
 ### Backend
 - **Node.js & Express.js**
-- **MongoDB & Mongoose** (Database & ODM)
+- **MongoDB & Mongoose**
+- **Socket.io** (For real-time chat)
 - **JSON Web Tokens (JWT)** (Authentication)
 - **Bcrypt.js** (Password Hashing)
-- **Cors & Dotenv**
 
 ## 📂 Project Structure
 
 ```text
-unified-mentors/
-├── frontend/       # React application
-└── backend/        # Node.js/Express server
+RoomEase/
+├── frontend/       # React application (Tenant & Owner portals)
+└── backend/        # Node.js/Express server API
 ```
 
 ## 🛠️ Setup & Installation

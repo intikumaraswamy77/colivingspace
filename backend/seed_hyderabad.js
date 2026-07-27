@@ -14,7 +14,7 @@ const seedHyderabadData = async () => {
     let owner = await User.findOne({ email: ownerEmail });
     if (!owner) {
       owner = new User({
-        name: 'Madhapur Landlord',
+        name: 'Arjun Kumar',
         email: ownerEmail,
         password: 'password123',
         role: 'owner',
@@ -123,7 +123,7 @@ const seedHyderabadData = async () => {
     let tenant = await User.findOne({ email: tenantEmail });
     if (!tenant) {
       tenant = new User({
-        name: 'Techie Roommate',
+        name: 'Siddharth Rao',
         email: tenantEmail,
         password: 'password123',
         role: 'tenant',
