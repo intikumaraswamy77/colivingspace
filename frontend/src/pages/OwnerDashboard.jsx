@@ -6,7 +6,7 @@ import { Building2, Home, LogOut, ClipboardList, Check, X, Send, TrendingUp, Zap
 import { generateLeasePDF } from '../utils/generateLeasePDF';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:5000');
+const socket = io(import.meta.env.VITE_API_URL || 'http://localhost:5000');
 
 const OwnerDashboard = () => {
   const [properties, setProperties] = useState([]);
