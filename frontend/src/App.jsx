@@ -9,6 +9,7 @@ import Explore from './pages/Explore'
 import PropertyDetails from './pages/PropertyDetails'
 import ProfileSetup from './pages/ProfileSetup'
 import FindRoommates from './pages/FindRoommates'
+import Messages from './pages/Messages'
 import Home from './pages/Home'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -34,6 +35,8 @@ function App() {
             <Route path="/tenant-dashboard" element={<TenantDashboard />} />
             <Route path="/profile-setup" element={<ProfileSetup />} />
             <Route path="/find-roommates" element={<FindRoommates />} />
+            <Route path="/messages" element={<TenantDashboard initialTab="messages" />} />
+            <Route path="/profile" element={<TenantDashboard initialTab="profile" />} />
           </Route>
         </Route>
 
@@ -46,6 +49,7 @@ function App() {
           {/* Protected Portal Pages */}
           <Route element={<ProtectedRoute allowedRoles={['owner', 'admin']} />}>
             <Route path="owner-dashboard" element={<OwnerDashboard />} />
+            <Route path="messages" element={<OwnerDashboard initialTab="messages" />} />
           </Route>
           <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
             <Route path="admin-dashboard" element={<AdminDashboard />} />

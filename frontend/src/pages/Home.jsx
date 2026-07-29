@@ -1,8 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { Home as HomeIcon, Building2, UserPlus, LogIn, Sparkles, Map, FileText, Bot, ShieldCheck, Zap } from 'lucide-react';
 
 const Home = () => {
+  const userInfoString = localStorage.getItem('userInfo');
+  const userInfo = userInfoString ? JSON.parse(userInfoString) : null;
+
+  if (userInfo?.role === 'tenant') {
+    return <Navigate to="/explore" replace />;
+  } else if (userInfo?.role === 'owner') {
+    return <Navigate to="/portal/owner-dashboard" replace />;
+  } else if (userInfo?.role === 'admin') {
+    return <Navigate to="/portal/admin-dashboard" replace />;
+  }
+
   return (
     <div className="relative min-h-screen bg-slate-900 overflow-hidden font-sans">
       
@@ -37,7 +48,7 @@ const Home = () => {
             Next-Gen <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Accommodation</span> Discovery
           </h1>
           <p className="text-xl md:text-2xl text-slate-300 font-light leading-relaxed mb-10 max-w-3xl mx-auto">
-            The platform simplifies accommodation discovery while helping property owners efficiently manage shared living spaces. Powered by AI matchmaking and automated e-leases.
+            The platform simplifies accommodation discovery while helping property owners efficiently manage shared living spaces. Powered by smart matchmaking and automated e-leases.
           </p>
         </div>
 
@@ -53,7 +64,7 @@ const Home = () => {
               </div>
               <h3 className="text-3xl font-bold text-white mb-4">Find Your Home</h3>
               <p className="text-slate-400 mb-8 flex-1 leading-relaxed">
-                Log in as a Student or Professional to explore properties with interactive maps, get AI-matched with compatible roommates, and digitally sign leases.
+                Log in as a Student or Professional to explore properties with interactive maps, get smartly matched with compatible roommates, and digitally sign leases.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mt-auto">
                 <Link to="/login" className="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-6 rounded-xl transition-all flex justify-center items-center gap-2 shadow-[0_0_20px_rgba(37,99,235,0.3)]">
@@ -75,7 +86,7 @@ const Home = () => {
               </div>
               <h3 className="text-3xl font-bold text-white mb-4">Manage Properties</h3>
               <p className="text-slate-400 mb-8 flex-1 leading-relaxed">
-                Log in as an Owner to list properties, manage booking requests, receive simulated payments, and leverage AI Market Insights to maximize ROI.
+                Log in as an Owner to list properties, manage booking requests, receive simulated payments, and leverage Market Insights to maximize ROI.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mt-auto">
                 <Link to="/portal/login" className="flex-1 bg-purple-600 hover:bg-purple-500 text-white font-bold py-4 px-6 rounded-xl transition-all flex justify-center items-center gap-2 shadow-[0_0_20px_rgba(147,51,234,0.3)]">
@@ -98,7 +109,7 @@ const Home = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: <Bot className="text-pink-400" size={32}/>, title: 'AI Matchmaking', desc: 'Find the perfect roommates based on lifestyle, habits, and budget analysis.' },
+              { icon: <Bot className="text-pink-400" size={32}/>, title: 'Smart Matchmaking', desc: 'Find the perfect roommates based on lifestyle, habits, and budget analysis.' },
               { icon: <Map className="text-sky-400" size={32}/>, title: 'Interactive Maps', desc: 'Explore neighborhoods and properties with our responsive map discovery.' },
               { icon: <ShieldCheck className="text-emerald-400" size={32}/>, title: 'Verified Trust', desc: 'Secure simulated payments and verified owner profiles ensure safety.' },
               { icon: <FileText className="text-amber-400" size={32}/>, title: 'Auto E-Leases', desc: 'Generate legally formatted, digitally signed PDF leases instantly.' },

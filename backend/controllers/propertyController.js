@@ -8,7 +8,7 @@ const getProperties = async (req, res) => {
     const { location, roomType, minRent, maxRent } = req.query;
     
     // Build filter object dynamically based on query params
-    let query = { status: 'verified' };
+    let query = { status: 'verified', availability: 'Available' };
     if (location) query.location = { $regex: location, $options: 'i' };
     if (roomType && roomType !== 'All') query.roomType = roomType;
     if (minRent || maxRent) {
@@ -49,8 +49,10 @@ const createProperty = async (req, res) => {
   try {
     const { 
       title, description, location, roomType, rent, deposit, capacity, amenities, 
-      bedrooms, bathrooms, floor, furnishing, genderPreference, availableDates, images 
+      bedrooms, bathrooms, floor, furnishing, genderPreference, availableDates
     } = req.body;
+
+    const images = req.files ? req.files.map(file => `/uploads/${file.filename}`) : [];
 
     let lat, lng;
     try {
@@ -86,7 +88,8 @@ const createProperty = async (req, res) => {
       furnishing,
       genderPreference,
       availableDates,
-      images
+      images,
+      status: 'verified'
     });
 
     const createdProperty = await property.save();
@@ -193,6 +196,29 @@ const createPropertyReview = async (req, res) => {
   }
 };
 
+// @desc    Update property availability (Sold/Rented)
+// @route   PUT /api/properties/:id/availability
+// @access  Private/Owner
+const updatePropertyAvailability = async (req, res) => {
+  try {
+    const { availability } = req.body;
+    const property = await Property.findById(req.params.id);
+    if (!property) {
+      return res.status(404).json({ message: 'Property not found' });
+    }
+    
+    if (property.owner.toString() !== req.user._id.toString()) {
+      return res.status(401).json({ message: 'Not authorized to update this property' });
+    }
+
+    property.availability = availability;
+    const updatedProperty = await property.save();
+    res.json(updatedProperty);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getProperties,
   getPropertyById,
@@ -201,5 +227,6 @@ module.exports = {
   getPendingProperties,
   updatePropertyStatus,
   getAllPropertiesAdmin,
-  createPropertyReview
+  createPropertyReview,
+  updatePropertyAvailability
 };

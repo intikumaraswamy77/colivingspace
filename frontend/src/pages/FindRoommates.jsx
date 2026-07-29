@@ -14,7 +14,7 @@ const FindRoommates = () => {
       try {
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
         if (!userInfo || userInfo.role !== 'tenant') {
-          navigate('/');
+          navigate('/', { replace: true });
           return;
         }
 
@@ -41,7 +41,7 @@ const FindRoommates = () => {
     fetchRoommates();
   }, [navigate]);
 
-  if (loading) return <div className="text-center p-20">Running Matchmaking AI...</div>;
+  if (loading) return <div className="text-center p-20">Running Smart Matchmaking Algorithm...</div>;
 
   if (error === 'PROFILE_INCOMPLETE') {
     return (
@@ -55,7 +55,7 @@ const FindRoommates = () => {
         <div className="bg-slate-800/80 backdrop-blur-xl p-10 rounded-3xl shadow-2xl border border-white/10 text-center max-w-lg w-full relative z-10">
           <Sparkles className="w-20 h-20 text-indigo-400 mx-auto mb-6 drop-shadow-[0_0_15px_rgba(129,140,248,0.5)]" />
           <h2 className="text-3xl font-extrabold text-white mb-4">Let's Find Your Match</h2>
-          <p className="text-slate-400 mb-8">Before our AI can find your perfect roommate, you need to tell us a bit about your lifestyle!</p>
+          <p className="text-slate-400 mb-8">Before our algorithm can find your perfect roommate, you need to tell us a bit about your lifestyle!</p>
           <button 
             onClick={() => navigate('/profile-setup')}
             className="w-full bg-indigo-600 text-white font-bold py-4 rounded-xl shadow-[0_0_15px_rgba(79,70,229,0.3)] hover:bg-indigo-500 hover:shadow-[0_0_25px_rgba(79,70,229,0.5)] transition-all"
@@ -78,7 +78,7 @@ const FindRoommates = () => {
       <div className="max-w-7xl mx-auto px-4 relative z-10">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-extrabold text-white mb-4 tracking-tight flex items-center justify-center gap-3">
-            <Sparkles className="text-indigo-400" /> AI Roommate Matches
+            <Sparkles className="text-indigo-400" /> Smart Roommate Matches
           </h1>
           <p className="text-xl text-slate-400">We analyzed 10+ data points to find you the most compatible roommates.</p>
         </div>
@@ -111,6 +111,18 @@ const FindRoommates = () => {
                   <div className="flex flex-wrap gap-2 mb-4">
                     <span className="text-sm bg-slate-900 text-slate-300 px-3 py-1 rounded-full font-medium border border-white/10">{match.profile.age} yrs</span>
                     <span className="text-sm bg-slate-900 text-slate-300 px-3 py-1 rounded-full font-medium border border-white/10">{match.profile.gender}</span>
+                    {match.profile.introvertExtrovert && (
+                      <span className="text-sm bg-slate-900 text-slate-300 px-3 py-1 rounded-full font-medium border border-white/10">{match.profile.introvertExtrovert}</span>
+                    )}
+                    {match.profile.foodPreference && (
+                      <span className="text-sm bg-slate-900 text-slate-300 px-3 py-1 rounded-full font-medium border border-white/10">{match.profile.foodPreference}</span>
+                    )}
+                    {match.profile.smoking && match.profile.smoking !== 'No' && (
+                      <span className="text-sm bg-slate-900 text-slate-300 px-3 py-1 rounded-full font-medium border border-white/10">Smokes: {match.profile.smoking}</span>
+                    )}
+                    {match.profile.pets && match.profile.pets !== 'No' && (
+                      <span className="text-sm bg-slate-900 text-slate-300 px-3 py-1 rounded-full font-medium border border-white/10">Pets: {match.profile.pets}</span>
+                    )}
                   </div>
 
                   {match.profile.bio && (
@@ -134,7 +146,10 @@ const FindRoommates = () => {
                   
                   {/* Common Tags */}
                   <div className="border-t border-white/10 pt-6">
-                    <button className="w-full bg-indigo-600/10 hover:bg-indigo-600 border border-indigo-500/20 hover:border-indigo-500 text-indigo-400 hover:text-white font-bold py-3 rounded-xl transition-all">
+                    <button 
+                      onClick={() => navigate(`/messages?userId=${match._id}&name=${encodeURIComponent(match.name)}`)}
+                      className="w-full bg-indigo-600/10 hover:bg-indigo-600 border border-indigo-500/20 hover:border-indigo-500 text-indigo-400 hover:text-white font-bold py-3 rounded-xl transition-all"
+                    >
                       Message {match.name.split(' ')[0]}
                     </button>
                   </div>

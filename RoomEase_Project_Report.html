@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoomEase Project Report</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 40px; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #2980b9; margin-top: 30px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        h3 { color: #34495e; }
+        ul { margin-bottom: 20px; }
+        li { margin-bottom: 8px; }
+        strong { color: #2c3e50; }
+        .abstract { font-style: italic; background-color: #f8f9fa; padding: 15px; border-left: 4px solid #3498db; }
+    </style>
+</head>
+<body>
+
+    <h1>Detailed Project Report: RoomEase</h1>
+    <p><strong>Next-Generation Co-Living & Accommodation Discovery Platform</strong></p>
+
+    <h2>1. Abstract</h2>
+    <div class="abstract">
+        The urban real estate market for shared accommodations is highly fragmented, leaving tenants struggling to find compatible roommates and property owners overwhelmed by manual property management. <strong>RoomEase</strong> is a comprehensive, full-stack web application designed to bridge this gap. Built on the MERN stack (MongoDB, Express.js, React.js, Node.js), it integrates advanced features such as an AI-driven matchmaking algorithm for roommate compatibility, real-time bidirectional chat using WebSockets (Socket.io), dynamic map-based property discovery using OpenStreetMap Geocoding, and automated digital lease generation.
+    </div>
+
+    <h2>2. Introduction</h2>
+    <h3>2.1 Background</h3>
+    <p>With the rise of urban migration among students and young professionals, the demand for affordable shared housing has skyrocketed. However, existing platforms primarily act as classified boards without addressing the critical factor of <em>roommate compatibility</em> or providing end-to-end management tools for landlords.</p>
+
+    <h3>2.2 Problem Statement</h3>
+    <ul>
+        <li><strong>For Tenants:</strong> Finding a room is easy; finding a <em>compatible roommate</em> who shares similar lifestyle habits (sleep schedule, cleanliness, budget) is extremely difficult.</li>
+        <li><strong>For Owners:</strong> Managing multiple properties, filtering through booking requests, and communicating with prospective tenants is a manual, time-consuming process.</li>
+    </ul>
+
+    <h3>2.3 Objectives</h3>
+    <ul>
+        <li>To develop a centralized platform where users can seamlessly list, search, and book accommodations.</li>
+        <li>To implement an intelligent scoring system that matches users based on complex lifestyle data points.</li>
+        <li>To provide property owners with a powerful dashboard for managing listings and tenant interactions in real-time.</li>
+    </ul>
+
+    <h2>3. System Architecture</h2>
+    <p>RoomEase follows a robust <strong>Client-Server Architecture</strong> utilizing RESTful APIs for standard data transmission and WebSockets for real-time interactions.</p>
+
+    <h3>3.1 Frontend (Client Tier)</h3>
+    <ul>
+        <li>Developed as a Single Page Application (SPA) using <strong>React.js (Vite)</strong>.</li>
+        <li>Employs <strong>Tailwind CSS</strong> to achieve a modern, responsive, and accessible "Glassmorphism" UI design.</li>
+        <li>Uses <strong>React Router</strong> for secure, role-based navigation (Tenant vs. Owner portals).</li>
+        <li>Uses <strong>Leaflet.js</strong> for interactive map rendering.</li>
+    </ul>
+
+    <h3>3.2 Backend (Application Tier)</h3>
+    <ul>
+        <li>Powered by <strong>Node.js</strong> and <strong>Express.js</strong>.</li>
+        <li>Implements <strong>JSON Web Tokens (JWT)</strong> for stateless authentication and authorization.</li>
+        <li>Integrates <strong>Socket.io</strong> alongside the HTTP server to maintain persistent, bidirectional communication channels for the chat feature.</li>
+    </ul>
+
+    <h3>3.3 Database (Data Tier)</h3>
+    <ul>
+        <li>Utilizes <strong>MongoDB</strong>, a NoSQL database, hosted on MongoDB Atlas for high availability and scalability.</li>
+        <li>Uses <strong>Mongoose ODM</strong> for strict schema definitions and data validation.</li>
+    </ul>
+
+    <h2>4. Functional Requirements (Modules)</h2>
+    <h3>4.1 Authentication & Authorization Module</h3>
+    <ul>
+        <li>Secure user registration and login with bcrypt password hashing.</li>
+        <li>Role-Based Access Control (RBAC): Users are strictly categorized as <code>tenant</code>, <code>owner</code>, or <code>admin</code>.</li>
+    </ul>
+
+    <h3>4.2 Property Management Module (Owners)</h3>
+    <ul>
+        <li>Owners can create, read, update, and delete (CRUD) property listings.</li>
+        <li><strong>Automated Geocoding:</strong> When an owner enters a text address, the backend queries the OpenStreetMap Nominatim API to fetch the exact Latitude and Longitude coordinates, storing them in the database for map plotting.</li>
+    </ul>
+
+    <h3>4.3 Search & Discovery Module (Tenants)</h3>
+    <ul>
+        <li>Tenants can search for properties by location, budget, and room type.</li>
+        <li><strong>Interactive Map:</strong> The Explore page dynamically renders property pins on a map. Searching for a city automatically pans and zooms the map to the geocoded coordinates.</li>
+    </ul>
+
+    <h3>4.4 AI Matchmaking Module</h3>
+    <ul>
+        <li>Tenants fill out a detailed lifestyle profile (budget, wake-up time, cleanliness, introversion/extroversion, food preferences, smoking/alcohol habits).</li>
+        <li>The backend algorithm calculates a percentage-based <strong>Compatibility Score</strong> between the active user and all other users in the database, surfacing the highest-scoring matches first.</li>
+    </ul>
+
+    <h3>4.5 Booking & E-Lease Module</h3>
+    <ul>
+        <li>Tenants can send booking requests to properties.</li>
+        <li>Owners can review and 'Approve' or 'Reject' requests via their dashboard.</li>
+        <li>Upon approval and deposit payment, the system dynamically generates a customized, legally formatted PDF Lease Agreement using <code>jspdf</code>.</li>
+    </ul>
+
+    <h3>4.6 Real-Time Communication Module</h3>
+    <ul>
+        <li>Tenants and Owners can communicate instantly regarding a booking.</li>
+        <li>Powered by WebSockets, messages are pushed to the client immediately without requiring a page refresh, utilizing isolated Socket "rooms" based on the unique Booking ID.</li>
+    </ul>
+
+    <h2>5. Database Schema Design</h2>
+    <ul>
+        <li><strong>User Model:</strong> Core Info (name, email, password, role) and Embedded Profile (bio, age, budget, habits).</li>
+        <li><strong>Property Model:</strong> Details (title, location, lat, lng), Specs (roomType, rent, capacity), and Relations (owner ObjectId).</li>
+        <li><strong>Booking Model:</strong> Status, PaymentStatus, Embedded Conversation Array (for chat), and Relations to Property, Tenant, and Owner.</li>
+    </ul>
+
+    <h2>6. Implementation Highlights & Challenges Conquered</h2>
+    <h3>Real-Time Chat Integration</h3>
+    <p>Integrating Socket.io required wrapping the standard Express <code>app</code> in a native Node <code>http.createServer</code>. The challenge was ensuring that messages were only broadcasted to the specific Tenant and Owner involved in a transaction. This was solved by dynamically joining Socket instances to a unique room named after the <code>Booking ID</code>.</p>
+
+    <h3>Geocoding Accuracy</h3>
+    <p>Relying on user-inputted text for map locations is historically error-prone. RoomEase solves this by intercepting the property creation request on the server, sending the address string to the OpenStreetMap Nominatim API, and extracting precise decimal coordinates before saving the document to MongoDB.</p>
+
+    <h3>Accessibility (a11y)</h3>
+    <p>The entire frontend was audited and overhauled to ensure strict WCAG compliance. Every form input is explicitly linked to a <code>&lt;label&gt;</code> using <code>htmlFor</code> and <code>id</code>, and utilizes <code>aria-label</code> attributes for screen readers, ensuring the platform is usable by everyone.</p>
+
+    <h2>7. Conclusion and Future Scope</h2>
+    <p>RoomEase successfully demonstrates how modern web technologies and AI-inspired algorithms can completely transform the rental and co-living industry. By centralizing discovery, management, and communication into a single, beautifully designed application, it eliminates the friction traditionally associated with finding housing.</p>
+    <ul>
+        <li><strong>Live Payment Gateway:</strong> Integrating Stripe API to process actual credit card transactions for rent and security deposits.</li>
+        <li><strong>KYC Verification:</strong> Adding a third-party identity verification service to verify government IDs and increase platform trust.</li>
+        <li><strong>Maintenance Ticketing:</strong> A dedicated module for active tenants to report plumbing, electrical, or structural issues directly to the owner's dashboard with photo uploads.</li>
+    </ul>
+
+</body>
+</html>

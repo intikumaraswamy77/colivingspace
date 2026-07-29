@@ -55,14 +55,17 @@ const propertySchema = new mongoose.Schema({
   rent: {
     type: Number,
     required: true,
+    min: 0
   },
   deposit: {
     type: Number,
     required: true,
+    min: 0
   },
   capacity: {
     type: Number,
     required: true,
+    min: 1
   },
   amenities: [String],
   availableDates: {
@@ -71,9 +74,11 @@ const propertySchema = new mongoose.Schema({
   images: [String],
   bedrooms: {
     type: Number,
+    min: 0
   },
   bathrooms: {
     type: Number,
+    min: 0
   },
   floor: {
     type: String,
@@ -82,6 +87,11 @@ const propertySchema = new mongoose.Schema({
     type: String,
     enum: ['pending', 'verified', 'rejected'],
     default: 'pending'
+  },
+  availability: {
+    type: String,
+    enum: ['Available', 'Rented', 'Sold'],
+    default: 'Available'
   },
   reviews: [reviewSchema],
   rating: {

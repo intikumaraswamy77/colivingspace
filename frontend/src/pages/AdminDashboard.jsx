@@ -39,7 +39,7 @@ const AdminDashboard = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('userInfo');
-    navigate('/');
+    navigate('/', { replace: true });
   };
 
   if (!userInfo) return null;

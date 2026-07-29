@@ -16,6 +16,20 @@ const Register = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const userInfoString = localStorage.getItem('userInfo');
+    if (userInfoString) {
+      const userInfo = JSON.parse(userInfoString);
+      if (userInfo.role === 'admin') {
+        navigate('/portal/admin-dashboard', { replace: true });
+      } else if (userInfo.role === 'owner') {
+        navigate('/portal/owner-dashboard', { replace: true });
+      } else {
+        navigate('/explore', { replace: true });
+      }
+    }
+  }, [navigate]);
+
   const submitHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -27,11 +41,11 @@ const Register = () => {
       const { data } = await axios.post('/api/auth/register', { name, email, password, role }, config);
       localStorage.setItem('userInfo', JSON.stringify(data));
       if (data.role === 'admin') {
-        navigate('/portal/admin-dashboard');
+        navigate('/portal/admin-dashboard', { replace: true });
       } else if (data.role === 'owner') {
-        navigate('/portal/owner-dashboard');
+        navigate('/portal/owner-dashboard', { replace: true });
       } else {
-        navigate('/tenant-dashboard');
+        navigate('/tenant-dashboard', { replace: true });
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
@@ -63,7 +77,7 @@ const Register = () => {
           </h2>
           <p className="mt-2 text-center text-sm text-slate-400">
             Already have an account?{' '}
-            <Link to="/login" className="font-medium text-indigo-400 hover:text-indigo-300 transition-colors">
+            <Link to={isPortal ? '/portal/login' : '/login'} className="font-medium text-indigo-400 hover:text-indigo-300 transition-colors">
               Sign in here
             </Link>
           </p>

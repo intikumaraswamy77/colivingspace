@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
-import { Building2 } from 'lucide-react';
+import { Building2, UserCircle } from 'lucide-react';
 
 const TenantLayout = () => {
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -9,10 +9,8 @@ const TenantLayout = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('userInfo');
-    navigate('/');
+    navigate('/', { replace: true });
   };
-
-  const isHome = location.pathname === '/';
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-900">
@@ -24,19 +22,19 @@ const TenantLayout = () => {
             </div>
             <span className="text-xl font-black text-white tracking-tight">Room<span className="text-indigo-400">Ease</span></span>
           </Link>
-          <div className="space-x-6 flex items-center">
-            <Link to="/explore" className="text-slate-300 font-medium hover:text-white transition-colors">Find a Room</Link>
-            <Link to="/find-roommates" className="text-slate-300 font-medium hover:text-white transition-colors">Find Roommates</Link>
-            
-            <div className="flex items-center gap-4">
-              <Link to="/tenant-dashboard" className="bg-indigo-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-indigo-500 transition-all shadow-[0_0_15px_rgba(79,70,229,0.3)]">
-                My Dashboard
-              </Link>
-              <button onClick={handleLogout} className="text-red-400 font-medium hover:text-red-300 transition-colors">
-                Log Out
-              </button>
-            </div>
-          </div>
+              <div className="space-x-6 flex items-center">
+                <Link to="/explore" className="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Explore</Link>
+                <Link to="/find-roommates" className="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Roommates</Link>
+                <Link to="/messages" className="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Messages</Link>
+              </div>
+              <div className="flex items-center gap-4">
+                <Link to="/profile" className="flex items-center gap-2 bg-slate-800 text-slate-300 hover:text-white px-4 py-2 rounded-lg font-medium transition-colors border border-white/10 hover:border-white/20">
+                  <UserCircle size={18} /> Profile
+                </Link>
+                <button onClick={handleLogout} className="text-red-400 font-medium hover:text-red-300 transition-colors ml-2">
+                  Log Out
+                </button>
+              </div>
         </nav>
       )}
       <main className="flex-1 flex flex-col">

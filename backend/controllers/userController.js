@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const generateToken = require('../utils/generateToken');
 
 // @desc    Update user profile
 // @route   PUT /api/users/profile
@@ -8,19 +9,21 @@ const updateProfile = async (req, res) => {
     const user = await User.findById(req.user._id);
 
     if (user) {
-      user.profile = { ...user.profile, ...req.body.profile, isProfileComplete: true };
+      user.profile = { ...(user.profile ? user.profile.toObject() : {}), ...req.body.profile, isProfileComplete: true };
       const updatedUser = await user.save();
       res.json({
         _id: updatedUser._id,
         name: updatedUser.name,
         email: updatedUser.email,
         role: updatedUser.role,
-        profile: updatedUser.profile
+        profile: updatedUser.profile,
+        token: generateToken(updatedUser._id)
       });
     } else {
       res.status(404).json({ message: 'User not found' });
     }
   } catch (error) {
+    console.error("Profile update error:", error);
     res.status(500).json({ message: error.message });
   }
 };

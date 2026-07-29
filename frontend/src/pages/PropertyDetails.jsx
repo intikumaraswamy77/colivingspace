@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { MapPin, Users, IndianRupee, CheckCircle2, ArrowLeft, Send, BedDouble, Bath, Layers, Armchair, Calendar, User, ShieldCheck, Star } from 'lucide-react';
+import { MapPin, Users, IndianRupee, CheckCircle2, ArrowLeft, Send, BedDouble, Bath, Layers, Armchair, Calendar, User, ShieldCheck, Star, MessageCircle } from 'lucide-react';
 
 const PropertyDetails = () => {
   const { id } = useParams();
@@ -289,6 +289,13 @@ const PropertyDetails = () => {
                 className="w-full bg-indigo-600 text-white font-bold text-lg py-4 rounded-xl shadow-[0_0_15px_rgba(79,70,229,0.3)] hover:bg-indigo-500 hover:shadow-[0_0_25px_rgba(79,70,229,0.5)] transition-all flex justify-center items-center gap-2"
               >
                 <Send size={20} /> Request to Book
+              </button>
+              
+              <button 
+                onClick={() => navigate(`/messages?userId=${property.owner?._id}&name=${encodeURIComponent(property.owner?.name)}`)}
+                className="w-full mt-3 bg-slate-800 text-indigo-400 font-bold text-lg py-4 rounded-xl border border-indigo-500/20 hover:bg-slate-700 hover:border-indigo-500 transition-all flex justify-center items-center gap-2"
+              >
+                <MessageCircle size={20} /> Message Owner
               </button>
               
               <p className="text-center text-sm text-slate-500 mt-4">

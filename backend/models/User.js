@@ -23,12 +23,12 @@ const userSchema = new mongoose.Schema({
   // Profile details (useful for matching later)
   profile: {
     bio: String,
-    age: Number,
+    age: { type: Number, min: 16, max: 120 },
     gender: { type: String, enum: ['Male', 'Female', 'Other'] },
     occupation: String,
     company: String,
     college: String,
-    budget: Number,
+    budget: { type: Number, min: 0 },
     wakeUpTime: { type: String, enum: ['Early Bird', 'Night Owl', 'Flexible'] },
     cleanliness: { type: String, enum: ['Very Clean', 'Moderate', 'Messy'] },
     introvertExtrovert: { type: String, enum: ['Introvert', 'Extrovert', 'Ambivert'] },
@@ -43,9 +43,9 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Hash password before saving
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function() {
   if (!this.isModified('password')) {
-    next();
+    return;
   }
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);

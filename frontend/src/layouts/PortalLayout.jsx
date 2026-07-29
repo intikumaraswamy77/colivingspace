@@ -1,12 +1,21 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
+import { Building2 } from 'lucide-react';
 
 const PortalLayout = () => {
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('userInfo');
+    navigate('/', { replace: true });
+  };
+
   return (
-    <div className="min-h-screen flex flex-col bg-slate-900">
-      {/* Portal Layout doesn't have a consumer top navbar. 
-          The Dashboards themselves handle their own Sidebar navigation. */}
-      <Outlet />
+    <div className="min-h-screen bg-slate-900 flex flex-col font-sans">
+      <div className="flex-1 flex flex-col">
+        <Outlet />
+      </div>
     </div>
   );
 };

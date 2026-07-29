@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { LogIn, User, Lock, Mail, ArrowLeft } from 'lucide-react';
 
@@ -7,7 +7,23 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const location = useLocation();
+  const isPortal = location.pathname.includes('/portal');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const userInfoString = localStorage.getItem('userInfo');
+    if (userInfoString) {
+      const userInfo = JSON.parse(userInfoString);
+      if (userInfo.role === 'admin') {
+        navigate('/portal/admin-dashboard', { replace: true });
+      } else if (userInfo.role === 'owner') {
+        navigate('/portal/owner-dashboard', { replace: true });
+      } else {
+        navigate('/explore', { replace: true });
+      }
+    }
+  }, [navigate]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -16,11 +32,11 @@ const Login = () => {
       const { data } = await axios.post('/api/auth/login', { email, password }, config);
       localStorage.setItem('userInfo', JSON.stringify(data));
       if (data.role === 'admin') {
-        navigate('/portal/admin-dashboard');
+        navigate('/portal/admin-dashboard', { replace: true });
       } else if (data.role === 'owner') {
-        navigate('/portal/owner-dashboard');
+        navigate('/portal/owner-dashboard', { replace: true });
       } else {
-        navigate('/tenant-dashboard');
+        navigate('/tenant-dashboard', { replace: true });
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid email or password');
@@ -52,7 +68,7 @@ const Login = () => {
           </h2>
           <p className="mt-2 text-center text-sm text-slate-400">
             Or{' '}
-            <Link to="/register" className="font-medium text-indigo-400 hover:text-indigo-300 transition-colors">
+            <Link to={isPortal ? '/portal/register' : '/register'} className="font-medium text-indigo-400 hover:text-indigo-300 transition-colors">
               start your free account
             </Link>
           </p>
