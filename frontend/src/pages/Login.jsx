@@ -75,6 +75,24 @@ const Login = () => {
         </div>
         <form className="mt-8 space-y-6" onSubmit={submitHandler}>
           {error && <div className="p-3 bg-red-500/10 border border-red-500/20 text-red-400 rounded-md text-sm text-center">{error}</div>}
+          
+          <div className="flex gap-4 mb-2">
+            <button
+              type="button"
+              onClick={() => { setEmail('tenant@test.com'); setPassword('123456'); }}
+              className="flex-1 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 py-2 rounded-xl text-xs font-bold transition-colors border border-indigo-500/20 uppercase tracking-wider"
+            >
+              Demo Tenant
+            </button>
+            <button
+              type="button"
+              onClick={() => { setEmail('owner@test.com'); setPassword('123456'); }}
+              className="flex-1 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 py-2 rounded-xl text-xs font-bold transition-colors border border-purple-500/20 uppercase tracking-wider"
+            >
+              Demo Owner
+            </button>
+          </div>
+
           <div className="rounded-md shadow-sm space-y-4">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

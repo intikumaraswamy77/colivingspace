@@ -15,7 +15,11 @@ const { Server } = require('socket.io');
 dotenv.config();
 
 // Connect to database
-connectDB();
+connectDB().then(() => {
+  // Seed demo users for easy login
+  const seedDemoUsers = require('./utils/seedDemoUsers');
+  seedDemoUsers();
+});
 
 const app = express();
 const server = http.createServer(app);
